@@ -3,6 +3,7 @@
 {
   home.packages = with pkgs; [
     quickshell
+    kitty
     waybar
     rofi
     awww

@@ -7,6 +7,10 @@ let
   configs = {
     fastfetch = "fastfetch";
     hypr = "hypr";
+    kitty = "kitty";
+    rofi = "rofi";
+    waybar = "waybar";
+    yazi = "yazi";
   };
 in
 {
