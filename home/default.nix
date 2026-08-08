@@ -1,20 +1,12 @@
 { config, pkgs, userName, ... }:
 
 let
-  dotfiles = "${config.home.homeDirectory}/Documents/nix-dotfiles/dotfiles";
+  dotfiles = "${config.home.homeDirectory}/Documents/dotfiles/dotfiles";
   link = path: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${path}";
 
   configs = {
-    color = "color";
     fastfetch = "fastfetch";
     hypr = "hypr";
-    nvim = "nvim";
-    quickshell = "quickshell";
-    waybar = "waybar";
-    rofi = "rofi";
-    swaync = "swaync";
-    wlogout = "wlogout";
-    yazi = "yazi";
   };
 in
 {

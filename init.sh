@@ -75,7 +75,7 @@ set_user_paths() {
   USER_HOME="/mnt/home/${USER_NAME}"
   USER_DOCS="${USER_HOME}/Documents"
   USER_PICTURES="${USER_HOME}/Pictures"
-  DOTFILES_TARGET="${USER_DOCS}/nix-dotfiles"
+  DOTFILES_TARGET="${USER_DOCS}/dotfiles"
   WALLPAPERS_TARGET="${USER_PICTURES}/wallpapers"
 }
 
@@ -251,7 +251,7 @@ prepare_user_files() {
 }
 
 activate_full_system() {
-  nixos-enter --root /mnt -c "nixos-rebuild switch --flake /home/${USER_NAME}/Documents/nix-dotfiles#${HOST_NAME}"
+  nixos-enter --root /mnt -c "nixos-rebuild switch --flake /home/${USER_NAME}/Documents/dotfiles#${HOST_NAME}"
 }
 
 read_host_config
