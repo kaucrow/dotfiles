@@ -8,11 +8,11 @@ HOST_NAME=""
 DISK=""
 CPU=""
 GPU=""
+INSTALL_TYPE=""
 USER_HOME=""
 USER_DOCS=""
 USER_PICTURES=""
 DOTFILES_TARGET=""
-WALLPAPERS_TARGET=""
 STATE_DIR="/mnt/var/lib/nix-dotfiles-install-state"
 RESET_STATE=0
 
@@ -76,7 +76,6 @@ set_user_paths() {
   USER_DOCS="${USER_HOME}/Documents"
   USER_PICTURES="${USER_HOME}/Pictures"
   DOTFILES_TARGET="${USER_DOCS}/dotfiles"
-  WALLPAPERS_TARGET="${USER_PICTURES}/wallpapers"
 }
 
 prompt_value() {
@@ -134,6 +133,10 @@ validate_choice() {
   exit 1
 }
 
+validate_install_type() {
+  validate_choice "${INSTALL_TYPE}" "full-disk dual-boot" "install type"
+}
+
 ask_host_config() {
   echo "==> Configure host"
   USER_NAME="$(prompt_value "User name" "${USER_NAME}")"
@@ -147,10 +150,13 @@ ask_host_config() {
     GPU="${CPU}"
   fi
 
+  INSTALL_TYPE="$(prompt_value "Install type" "${INSTALL_TYPE}" "full-disk/dual-boot")"
+
   validate_user_name "${USER_NAME}"
   validate_host_name "${HOST_NAME}"
   validate_choice "${CPU}" "amd intel" "cpu"
   validate_choice "${GPU}" "nvidia amd intel" "gpu"
+  validate_install_type
 }
 
 write_host_config() {
@@ -206,6 +212,59 @@ confirm_disko() {
   fi
 }
 
+confirm_disko_dualboot() {
+  echo "==> Install summary"
+  echo "    User: ${USER_NAME}"
+  echo "    Mail: ${USER_EMAIL}"
+  echo "    Host: ${HOST_NAME}"
+  echo "    Disk: ${DISK}"
+  echo "    CPU : ${CPU}"
+  echo "    GPU : ${GPU}"
+  echo "    Type: dual-boot"
+  echo
+  echo "==> Current block devices"
+  lsblk
+  echo
+  echo "This will create NixOS partitions in FREE SPACE on ${DISK}."
+  echo "Existing Windows partitions will NOT be modified."
+  echo "A new 1G EFI, 8G swap, and BTRFS root will be created."
+  printf 'Type exactly "USE FREE SPACE %s" to continue: ' "${DISK}"
+  read -r CONFIRM
+  if [ "${CONFIRM}" != "USE FREE SPACE ${DISK}" ]; then
+    echo "confirmation mismatch, aborting."
+    exit 1
+  fi
+}
+
+copy_windows_efi() {
+  echo "==> Copying Windows EFI files to NixOS ESP..."
+
+  WINDOWS_ESP=$(blkid | grep "EFI system partition" | grep -v NIXOS | cut -d: -f1 | head -1)
+
+  if [ -z "${WINDOWS_ESP}" ]; then
+    echo "Warning: could not find Windows EFI partition."
+    echo "Systemd-boot may not detect Windows automatically."
+    echo "You can copy the files manually later."
+    return 0
+  fi
+
+  echo "    Found Windows ESP: ${WINDOWS_ESP}"
+  mkdir -p /mnt/windows-esp
+  mount "${WINDOWS_ESP}" /mnt/windows-esp
+
+  if [ -d "/mnt/windows-esp/EFI/Microsoft" ]; then
+    mkdir -p /mnt/boot/EFI
+    cp -r /mnt/windows-esp/EFI/Microsoft /mnt/boot/EFI/
+    echo "    Copied EFI/Microsoft to /boot/EFI/"
+  else
+    echo "    Warning: EFI/Microsoft not found on Windows ESP."
+  fi
+
+  umount /mnt/windows-esp
+  rmdir /mnt/windows-esp
+  echo "    Done."
+}
+
 run_disko() {
   desc="1. Running Disko for partitioning and mounting..."
 
@@ -214,9 +273,19 @@ run_disko() {
     return 0
   fi
 
-  confirm_disko
-  echo "==> ${desc}"
-  nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount ./nixos/disko.nix
+  if [ "${INSTALL_TYPE}" = "dual-boot" ]; then
+    confirm_disko_dualboot
+    echo "==> Creating partitions in free space..."
+    sh ./nixos/partition-dualboot.sh "${DISK}"
+    echo "==> ${desc}"
+    nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode format,mount ./nixos/disko-dualboot.nix
+    copy_windows_efi
+  else
+    confirm_disko
+    echo "==> ${desc}"
+    nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount ./nixos/disko.nix
+  fi
+
   mark_done "01-disko"
 }
 
@@ -242,9 +311,8 @@ prepare_user_files() {
   rm -rf "${DOTFILES_TARGET}"
   cp -a . "${DOTFILES_TARGET}"
 
-  if [ ! -d "${WALLPAPERS_TARGET}/.git" ]; then
-    rm -rf "${WALLPAPERS_TARGET}"
-    git clone https://github.com/huzch/wallpapers.git "${WALLPAPERS_TARGET}"
+  if [ -d "${DOTFILES_TARGET}/wallpapers" ]; then
+    mv "${DOTFILES_TARGET}/wallpapers" "${USER_PICTURES}/wallpapers"
   fi
 
   nixos-enter --root /mnt -c "chown -R ${USER_NAME}:users /home/${USER_NAME}/Documents /home/${USER_NAME}/Pictures"
