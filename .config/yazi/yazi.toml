@@ -1,0 +1,14 @@
+[opener]
+pdff = [
+    { run = 'nohup zathura -c "$HOME/.config/zathura" "$@" >/dev/null 2>&1 &', orphan = true, desc = "zathura", for = "unix" }
+]
+feh = [
+    { run = 'feh "$@"', block = false, desc = "feh", for = "unix" }
+]
+
+
+[open]
+rules = [
+    { mime = "application/pdf", use = [ "pdff", "reveal" ] },
+    { mime = "image/*", use = [ "feh" ] }
+]

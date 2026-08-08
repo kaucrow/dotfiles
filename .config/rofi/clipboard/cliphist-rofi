@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+tmp_dir="/tmp/cliphist"
+mkdir -p "$tmp_dir"
+
+if [ -z "$1" ]; then
+    echo -en "clear history\0icon\x1fuser-trash\n"
+
+    cliphist list | while read -r line; do
+        id=$(echo "$line" | cut -f1)
+        
+        if [[ "$line" == *"binary data"* ]]; then
+            img="$tmp_dir/$id.png"
+            if [ ! -f "$img" ]; then
+                cliphist decode "$id" | magick - -resize 256x256 "$img"
+            fi
+            echo -en "$id [Image]\0icon\x1f$img\n"
+        else
+            echo -en "$line\0icon\x1fedit-copy\n"
+        fi
+    done
+else
+    
+    if [[ "$1" == "clear history" ]]; then
+        cliphist wipe
+        rm -rf "$tmp_dir"/*
+    else
+        cliphist decode $(echo "$1" | awk '{print $1}') | wl-copy
+    fi
+fi

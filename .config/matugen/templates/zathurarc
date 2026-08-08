@@ -1,0 +1,15 @@
+set recolor "true"
+
+set default-bg          "{{colors.surface.default.hex}}"
+
+set recolor-lightcolor  "{{colors.surface.default.hex}}"
+set recolor-darkcolor   "{{colors.on_surface.default.hex}}"
+
+set statusbar-bg        "{{colors.surface.default.hex}}"
+set statusbar-fg        "{{colors.on_surface.default.hex}}"
+set inputbar-bg        "{{colors.surface.default.hex}}"
+set inputbar-fg        "{{colors.on_surface.default.hex}}"
+
+set recolor-keephue "true"
+
+set selection-clipboard clipboard

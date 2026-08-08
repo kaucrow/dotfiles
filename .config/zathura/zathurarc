@@ -1,0 +1,15 @@
+set recolor "true"
+
+set default-bg          "#111415"
+
+set recolor-lightcolor  "#111415"
+set recolor-darkcolor   "#e1e3e3"
+
+set statusbar-bg        "#111415"
+set statusbar-fg        "#e1e3e3"
+set inputbar-bg        "#111415"
+set inputbar-fg        "#e1e3e3"
+
+set recolor-keephue "true"
+
+set selection-clipboard clipboard
