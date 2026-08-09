@@ -15,7 +15,7 @@
     };
 
     rose-pine-cursor = {
-      url = "github:rose-pine/cursor/v1.2.0";
+      url = "github:rose-pine/cursor/v1.1.0";
       flake = false;
     };
   };
