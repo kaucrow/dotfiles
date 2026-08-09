@@ -33,6 +33,9 @@
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-color-emoji
+      dejavu_fonts
+      font-awesome
+      corefonts
     ];
     fontconfig = {
       enable = true;
@@ -116,6 +119,7 @@
       vim
       git
       wget
+      papirus-icon-theme
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
