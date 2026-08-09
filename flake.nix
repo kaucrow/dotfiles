@@ -14,17 +14,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    rose-pine-cursor = {
-      url = "github:rose-pine/cursor/v1.1.0";
-      flake = false;
-    };
   };
 
-  outputs = { self, nixpkgs, home-manager, disko, rose-pine-cursor, ... }:
+  outputs = { self, nixpkgs, home-manager, disko, ... }:
   let
     host = import ./nixos/host.nix;
     system = "x86_64-linux";
-    specialArgs = host // { inherit rose-pine-cursor; };
+    specialArgs = host;
 
     mkSystem = modules: nixpkgs.lib.nixosSystem {
       inherit system;

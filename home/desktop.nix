@@ -1,4 +1,4 @@
-{ pkgs, rose-pine-cursor, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -22,18 +22,7 @@
     hyprpolkitagent
     swaynotificationcenter
     libnotify
-    (pkgs.stdenv.mkDerivation {
-      pname = "rose-pine-cursor";
-      version = "1.1.0";
-      src = rose-pine-cursor;
-      dontBuild = true;
-      installPhase = ''
-        mkdir -p $out/share/icons
-        for d in */; do
-          [ -f "$d/index.theme" ] || [ -f "$d/cursor.theme" ] && cp -r "$d" $out/share/icons/
-        done
-      '';
-    })
+    bibata-cursors
     pwvucontrol
     networkmanagerapplet
     udiskie
