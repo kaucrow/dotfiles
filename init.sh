@@ -307,6 +307,9 @@ prepare_user_files() {
   rm -rf "${DOTFILES_TARGET}"
   cp -a . "${DOTFILES_TARGET}"
 
+  # Ensure all scripts are executable
+  find "${DOTFILES_TARGET}" -name "*.sh" -exec chmod +x {} \;
+
   if [ -d "${DOTFILES_TARGET}/wallpapers" ]; then
     mv "${DOTFILES_TARGET}/wallpapers" "${USER_PICTURES}/wallpapers"
   fi
