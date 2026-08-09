@@ -73,6 +73,12 @@ sgdisk \
   "${DISK}"
 
 echo
+echo "==> Waiting for kernel to detect new partitions..."
+udevadm settle
+partprobe "${DISK}" 2>/dev/null || true
+sleep 2
+
+echo
 echo "==> Partitions created. New layout:"
 sgdisk -p "${DISK}"
 echo

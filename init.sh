@@ -178,10 +178,6 @@ validate_config() {
     exit 1
   fi
 
-  if [ "${RESET_STATE}" -eq 1 ]; then
-    rm -rf "${STATE_DIR}"
-  fi
-
   if [ ! -b "${DISK}" ]; then
     echo "target disk does not exist or is not a block device: ${DISK}"
     echo
@@ -268,7 +264,7 @@ copy_windows_efi() {
 run_disko() {
   desc="1. Running Disko for partitioning and mounting..."
 
-  if step_done "01-disko"; then
+  if [ "${RESET_STATE}" -eq 0 ] && step_done "01-disko"; then
     echo "==> ${desc}: skipped"
     return 0
   fi
