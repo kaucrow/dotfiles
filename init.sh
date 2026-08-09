@@ -290,7 +290,7 @@ run_disko() {
 }
 
 generate_hardware_config() {
-  nixos-generate-config --no-filesystems --root /mnt
+  nixos-generate-config --root /mnt
 }
 
 copy_config() {
