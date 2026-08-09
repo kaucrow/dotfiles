@@ -318,7 +318,7 @@ prepare_user_files() {
 }
 
 activate_full_system() {
-  nixos-enter --root /mnt -c "nixos-rebuild switch --flake /home/${USER_NAME}/Documents/dotfiles#${HOST_NAME}"
+  nixos-enter --root /mnt -c "nixos-rebuild boot --flake /home/${USER_NAME}/Documents/dotfiles#${HOST_NAME}"
 }
 
 read_host_config
