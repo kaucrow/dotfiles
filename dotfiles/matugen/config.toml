@@ -1,5 +1,5 @@
 [config.wallpaper]
-command = "awww set {{ image }}"
+command = "awww img {{ image }}"
 set = true
 
 [templates.waybar]
@@ -33,11 +33,11 @@ post_hook = 'hyprctl reload'
 
 [templates.gtk3]
 input_path = '~/.config/matugen/templates/gtk-colors.css'
-output_path = '~/.config/gtk-3.0/gtk.css'
+output_path = '~/.config/gtk-3.0/gtk-colors.css'
 
 [templates.gtk4]
 input_path = '~/.config/matugen/templates/gtk-colors.css'
-output_path = '~/.config/gtk-4.0/gtk.css'
+output_path = '~/.config/gtk-4.0/gtk-colors.css'
 
 [templates.rofi]
 input_path = '~/.config/matugen/templates/rofi-colors.rasi'
@@ -46,16 +46,8 @@ output_path = '~/.config/rofi/shared/colors.rasi'
 [templates.cava]
 input_path = '~/.config/matugen/templates/matugen-cava'
 output_path = '~/.config/cava/config'
-post_hook = "pkill -USR1 cava"
+post_hook = "pgrep cava && pkill -USR1 cava || true"
 
 [templates.zathura]
 input_path = '~/.config/matugen/templates/zathurarc'
 output_path = '~/.config/zathura/zathurarc'
-
-[templates.spicetify]
-input_path = '~/.config/matugen/templates/spotify-colors.ini'
-output_path = '~/.config/spicetify/Themes/text/color.ini'
-
-[templates.vesktop]
-input_path = '~/.config/matugen/templates/midnight-discord.css'
-output_path = '~/.config/vesktop/themes/matugen.css'

@@ -26,7 +26,6 @@
 	"interval": 2,
 	"align": 0,
 	"rotate": 0,
-	//"format": "{icon} {percent}%",
 	"format-icons": [
 		" ",
 		" ",
@@ -37,15 +36,14 @@
 		"󰃠 "
 	],
 	"format": "{icon}",
-	//"format-icons": ["","","","","","","","","","","","","","",""],
 	"tooltip-format": "backlight {percent}%",
 	"icon-size": 10,
 	"on-click": "",
 	"on-click-middle": "",
 	"on-click-right": "",
 	"on-update": "",
-	"on-scroll-up": "$HOME/.config/hypr/scripts/Brightness.sh --inc",
-	"on-scroll-down": "$HOME/.config/hypr/scripts/Brightness.sh --dec",
+	"on-scroll-up": "$HOME/.config/hypr/scripts/brightness.sh --inc",
+	"on-scroll-down": "$HOME/.config/hypr/scripts/brightness.sh --dec",
 	"smooth-scrolling-threshold": 1,
 },
 

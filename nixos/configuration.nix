@@ -105,7 +105,7 @@
   };
 
   programs.zsh.enable = true;
-  services.getty.autologinUser = userName;
+  services.displayManager.ly.enable = true;
   users.users.${userName} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" "audio" "render" ];
@@ -120,6 +120,8 @@
       git
       wget
       papirus-icon-theme
+      adw-gtk3
+      adwaita-icon-theme
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";

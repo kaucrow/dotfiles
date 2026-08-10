@@ -178,6 +178,10 @@ validate_config() {
     exit 1
   fi
 
+  if [ "${RESET_STATE}" -eq 1 ]; then
+    rm -rf "${STATE_DIR}"
+  fi
+
   if [ ! -b "${DISK}" ]; then
     echo "target disk does not exist or is not a block device: ${DISK}"
     echo

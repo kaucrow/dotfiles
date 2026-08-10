@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # === CONFIG ===
 WALLPAPER_DIR="$HOME/Pictures/wallpapers"

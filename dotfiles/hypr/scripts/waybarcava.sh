@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
 # Not my own work. This was added through Github PR. Credit to original author
 
@@ -31,7 +31,7 @@ framerate = 30
 bars = 10
 
 [input]
-method = pulse
+method = pipewire
 source = auto
 
 [output]

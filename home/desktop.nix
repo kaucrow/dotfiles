@@ -26,6 +26,17 @@
     pwvucontrol
     networkmanagerapplet
     udiskie
+    matugen
+    imagemagick
+    jq
+    cava
+    pulseaudio
+    rustup
+    brightnessctl
+    pamixer
+    playerctl
+    nodejs
+    python3
   ];
 
   programs.foot = {
