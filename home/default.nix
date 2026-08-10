@@ -49,16 +49,13 @@ in
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
     };
-    gtk3.extraCss = ''@import url("gtk-colors.css");'';
-    gtk4.extraCss = ''@import url("gtk-colors.css");'';
+    gtk3.extraCss = ''@import url("file://${config.home.homeDirectory}/.config/gtk-3.0/gtk-colors.css");'';
+    gtk4.extraCss = ''@import url("file://${config.home.homeDirectory}/.config/gtk-4.0/gtk-colors.css");'';
   };
 
   home.file.".local/share/fcitx5/rime/default.custom.yaml".source = link "rime/default.custom.yaml";
 
   xdg.configFile = builtins.mapAttrs (name: value: {
     source = link value;
-  }) configs // {
-    "gtk-3.0/gtk-colors.css".source = link "gtk-3.0/gtk-colors.css";
-    "gtk-4.0/gtk-colors.css".source = link "gtk-4.0/gtk-colors.css";
-  };
+  }) configs;
 }
